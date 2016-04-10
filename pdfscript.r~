@@ -2214,35 +2214,6 @@ summaryPDF <- function( title="test", min.peptides=1, mc=T, separation=F, rf=T, 
                \n@
                 \\end{center}
                 \\end{frame}\n", sep="")
-
-           ###############################################################
-           ## separate for each experiment
-           SweaveFile = paste(SweaveFile, "\\begin{frame}
-               \\frametitle{Andromeda Distribution II}\n
-               Andromeda score distribution of evidences without contaminants / reverse hits.
-               \\begin{center}
-               \\setkeys{Gin}{width=0.8\\textwidth}
-               \n<<Andromedadist_sep, echo=F, fig=T, height=6, width=12>>=\n
-
-               scoreL <- tapply( evidence[, 'Score'], evidence[, 'Experiment'], function(x) as.numeric(x))
-               ##score <- as.numeric( evidence[, 'Score'])
-               scoreL.mean <- lapply(scoreL, mean, na.rm=T)
-               score.median <- lapply(scoreL, median, na.rm=T)
-               ##score.99 <- quantile( score, 0.99, na.rm=T)
-               ##par(mfrow=c(1,2))
-
-               boxplot(scoreL)
-               ##plot( density( score, na.rm=T  ), xlab='Andromeda score', lwd=3, main='density plot' )
-               ##legend('topright', legend=c(paste('mean:', round(score.mean,2) ), paste('median:', round(score.median,2) ), paste('99th percentile:', round(score.99,2) ) )   )
-               ##boxplot( score, main='boxplot' )
-               \n@
-                \\end{center}
-                \\end{frame}\n", sep="")
-
-
-
-
-
        }
     }
     #####################################################
@@ -2777,7 +2748,7 @@ summaryPDF <- function( title="test", min.peptides=1, mc=T, separation=F, rf=T, 
                        \\setkeys{Gin}{width=0.7\\textwidth}\n
                        \n<<msScansBarplot",experiments.tex[ex] ,", echo=F, fig=TRUE, height=10, width=15>>=
                           #ex.idx <- which( msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )] == '",experiments.dot[ex],"' )
-                          ex.idx <- grep( '^",experiments.dot[ex],"$', msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )])
+                          ex.idx <- grep( '",experiments.dot[ex],"', msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )])
 
                           msScansEx <- msScans[ex.idx, ]
                           # MS scans per raw file
@@ -2851,8 +2822,8 @@ summaryPDF <- function( title="test", min.peptides=1, mc=T, separation=F, rf=T, 
                        \\begin{center}
                        \\setkeys{Gin}{width=0.7\\textwidth}\n
                        \n<<msScansIonInjection",experiments.tex[ex] ,", echo=F, fig=TRUE, height=10, width=15>>=
-#                         ## ex.idx <- which(msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )] == '",experiments.dot[ex],"' )
-                          ex.idx <- grep( '^",experiments.dot[ex],"$', msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )])
+#                          ex.idx <- which(msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )] == '",experiments.dot[ex],"' )
+                          ex.idx <- grep( '",experiments.dot[ex],"', msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )])
                           msScansEx <- msScans[ex.idx, ]
 
                           # ion injection times per raw file
@@ -2923,7 +2894,7 @@ summaryPDF <- function( title="test", min.peptides=1, mc=T, separation=F, rf=T, 
                        \\setkeys{Gin}{width=0.7\\textwidth}\n
                        \n<<msScansCycleTime",experiments.tex[ex] ,", echo=F, fig=TRUE, height=10, width=15>>=
 #                          ex.idx <- which(msScans[,grep('^Experiment$', colnames(msScans), ignore.case=T )] == '",experiments.dot[ex],"' )
-                          ex.idx <- grep( '^",experiments.dot[ex],"$', msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )])
+                          ex.idx <- grep( '",experiments.dot[ex],"', msScans[, grep('^Experiment$', colnames(msScans), ignore.case=T )])
                           msScansEx <- msScans[ex.idx, ]
 
                           # cycle times per raw file
