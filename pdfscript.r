@@ -286,11 +286,11 @@ summaryPDF <- function( title="test", min.peptides=1, mc=T, separation=F, rf=T, 
     if(MQversion.num > 12000){
 
         # if the file is not in the current folder
-        if( length( grep("^experimentalDesign", filesInFolder)  ) == 0 ){
+        if( length( grep("^experimentalDesignTemplate", filesInFolder)  ) == 0 ){
 
             # check whether the file can be found on folder above
-            if(length( grep("^experimentalDesign", dir(".."))  ) > 0){
-                dummy <- file.copy( paste( "../", dir("..")[ grep("^experimentalDesign", dir("..")) ], sep=""), "." )
+            if(length( grep("^experimentalDesignTemplate", dir(".."))  ) > 0){
+                dummy <- file.copy( paste( "../", dir("..")[ grep("^experimentalDesignTemplate", dir("..")) ], sep=""), "." )
             } else {
                 warning("\nCannot find the 'experimentalDesign'-file!!\nTrying to proceed without...\n")
             }
@@ -301,7 +301,7 @@ summaryPDF <- function( title="test", min.peptides=1, mc=T, separation=F, rf=T, 
     ########################################################
     # check whether there are experiments defined
     ########################################################
-    ed.filename <- dir()[ grep("^experimentalDesign", dir())][1]
+    ed.filename <- dir()[ grep("^experimentalDesignTemplate", dir())][1]
     experiments = NULL
 
     if(!is.na(ed.filename)){
@@ -2217,33 +2217,31 @@ summaryPDF <- function( title="test", min.peptides=1, mc=T, separation=F, rf=T, 
 
            ###############################################################
            ## separate for each experiment
-           SweaveFile = paste(SweaveFile, "\\begin{frame}
-               \\frametitle{Andromeda Distribution II}\n
-               Andromeda score distribution of evidences without contaminants / reverse hits.
-               \\begin{center}
-               \\setkeys{Gin}{width=0.8\\textwidth}
-               \n<<Andromedadist_sep, echo=F, fig=T, height=6, width=12>>=\n
+           ## SweaveFile = paste(SweaveFile, "\\begin{frame}
+           ##     \\frametitle{Andromeda Distribution II}\n
+           ##     Andromeda score distribution of evidences without contaminants / reverse hits.
+           ##     \\begin{center}
+           ##     \\setkeys{Gin}{width=0.8\\textwidth}
+           ##     \n<<Andromedadist_sep, echo=F, fig=T, height=6, width=12>>=\n
 
-               scoreL <- tapply( evidence[, 'Score'], evidence[, 'Experiment'], function(x) as.numeric(x))
-               ##score <- as.numeric( evidence[, 'Score'])
-               scoreL.mean <- lapply(scoreL, mean, na.rm=T)
-               score.median <- lapply(scoreL, median, na.rm=T)
-               ##score.99 <- quantile( score, 0.99, na.rm=T)
-               ##par(mfrow=c(1,2))
+           ##     scoreL <- tapply( evidence[, 'Score'], evidence[, 'Experiment'], function(x) as.numeric(x))
 
-               boxplot(scoreL)
-               ##plot( density( score, na.rm=T  ), xlab='Andromeda score', lwd=3, main='density plot' )
-               ##legend('topright', legend=c(paste('mean:', round(score.mean,2) ), paste('median:', round(score.median,2) ), paste('99th percentile:', round(score.99,2) ) )   )
-               ##boxplot( score, main='boxplot' )
-               \n@
-                \\end{center}
-                \\end{frame}\n", sep="")
+           ##     ## score <- as.numeric( evidence[, 'Score'])
+           ##     scoreL.mean <- lapply(scoreL, mean, na.rm=T)
+           ##     score.median <- lapply(scoreL, median, na.rm=T)
+           ##     ##score.99 <- quantile( score, 0.99, na.rm=T)
+           ##     ##par(mfrow=c(1,2))
 
-
-
-
-
+           ##     boxplot(scoreL)
+           ##     ##plot( density( score, na.rm=T  ), xlab='Andromeda score', lwd=3, main='density plot' )
+           ##     ##legend('topright', legend=c(paste('mean:', round(score.mean,2) ), paste('median:', round(score.median,2) ), paste('99th percentile:', round(score.99,2) ) )   )
+           ##     ##boxplot( score, main='boxplot' )
+           ##     \n@
+           ##      \\end{center}
+           ##      \\end{frame}\n", sep="")
        }
+
+
     }
     #####################################################
     #  label free quantitaion: only for two experiments
@@ -4858,7 +4856,7 @@ getNRSites <- function(tab, mod="Phospho..STY."){
         # numbers of modifications -> take the highest number
         nMod.tmp <- tab.pep[, grep( paste("^Number.of.", mod, sep=""), colnames(tab.pep), ignore.case=T) ]
 
-        if( sum(nchar(nMod.tmp)) == 0 ){
+        if( sum(nchar(nMod.tmp), na.rm=T) == 0 ){
             nMod=dim(tab.pep)[1]
         } else {
              nMod <- max(unlist( lapply( strsplit( as.character(nMod.tmp[nchar(nMod.tmp) > 0 ]), ";"), function(x) max( as.numeric( x)) )) )
