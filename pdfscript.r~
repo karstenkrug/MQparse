@@ -4856,7 +4856,7 @@ getNRSites <- function(tab, mod="Phospho..STY."){
         # numbers of modifications -> take the highest number
         nMod.tmp <- tab.pep[, grep( paste("^Number.of.", mod, sep=""), colnames(tab.pep), ignore.case=T) ]
 
-        if( sum(nchar(nMod.tmp), na.rm=T) == 0 ){
+        if( sum(nchar(nMod.tmp)) == 0 ){
             nMod=dim(tab.pep)[1]
         } else {
              nMod <- max(unlist( lapply( strsplit( as.character(nMod.tmp[nchar(nMod.tmp) > 0 ]), ";"), function(x) max( as.numeric( x)) )) )
